@@ -1,7 +1,7 @@
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
-use crate::components::{DiceRoller, Header};
+use crate::components::{DiceRoller, Header, RollHistoryPanel};
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -13,19 +13,18 @@ pub fn App() -> impl IntoView {
         // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Stylesheet id="leptos" href="/pkg/dnd-near-rs.css"/>
 
-        // sets the document title
-        <Title text="D&D Helper"/>
+        <Title text="D&D Near"/>
 
-        // content for this welcome page
         <Router>
-            <Header />
-            <main class="app-content">
-                <Routes>
-                    <Route path="" view=HomePage/>
-                    <Route path="/dice" view=DiceRollerPage/>
-                    <Route path="/*any" view=NotFound/>
-                </Routes>
-            </main>
+        <Header />
+        <main class="app-content">
+            <Routes>
+                <Route path="" view=HomePage/>
+                <Route path="/dice" view=DiceRollerPage/>
+                <Route path="/*any" view=NotFound/>
+            </Routes>
+        </main>
+        <RollHistoryPanel />
         </Router>
     }
 }
