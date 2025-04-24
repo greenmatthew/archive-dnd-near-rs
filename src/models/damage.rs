@@ -22,3 +22,14 @@ impl std::fmt::Display for DamageType {
         write!(f, "{self:?}")
     }
 }
+
+struct Damage {
+    amount: u32,
+    damage_type: DamageType,
+}
+
+impl std::fmt::Display for Damage {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} {}", self.amount, self.damage_type)
+    }
+}
