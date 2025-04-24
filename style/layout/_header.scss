@@ -1,4 +1,4 @@
-/* Header styles */
+// style/layout/_header.scss - update to this
 .app-header {
     background-color: #121212;
     color: white;
@@ -10,8 +10,31 @@
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+.hamburger-menu {
+    position: absolute;
+    left: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+    }
 }
 
 .logo a {
@@ -26,23 +49,25 @@
     width: auto;
 }
 
-.main-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.main-nav li a {
-    color: #e1e1e1;
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-}
-
-.main-nav li a:hover,
-.main-nav li a:global(.active) {
-    background-color: rgba(255, 255, 255, 0.1);
+.hamburger-menu {
+    position: absolute;
+    left: 0;
+    background: none;
+    border: none;
     color: white;
-    text-decoration: none;
+    cursor: pointer;
+    padding: 8px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .material-symbols-outlined {
+        line-height: 1;
+    }
 }

@@ -2,22 +2,22 @@ use leptos::*;
 use leptos_router::*;
 
 #[component]
-pub fn Header() -> impl IntoView {
+pub fn Header(show_menu: WriteSignal<bool>) -> impl IntoView {
+    let toggle_menu = move |_| {
+        show_menu.update(|show| *show = !*show);
+    };
+
     view! {
         <header class="app-header">
             <div class="header-content">
+                <button class="hamburger-menu" on:click=toggle_menu>
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
                 <div class="logo">
                     <A href="/">
                         <img src="/assets/images/logo.svg" alt="D&D Helper Logo" />
                     </A>
                 </div>
-                <nav class="main-nav">
-                    <ul>
-                        <li><A href="/" exact=true>"Home"</A></li>
-                        <li><A href="/dice">"Dice Roller"</A></li>
-                        // Add more navigation items as you develop more tools
-                    </ul>
-                </nav>
             </div>
         </header>
     }

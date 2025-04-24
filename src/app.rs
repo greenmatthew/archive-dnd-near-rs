@@ -1,30 +1,36 @@
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
-use crate::components::{DiceRoller, Header, RollHistoryPanel};
+use crate::components::{DiceRoller, Header, RollHistoryPanel, SideNav};
 
 #[component]
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
+    
+    // Signal to track if the menu is open or closed
+    let (show_menu, set_show_menu) = create_signal(false);
 
     view! {
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Stylesheet id="leptos" href="/pkg/dnd-near-rs.css"/>
 
+        <Stylesheet href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close,menu"/>
+
         <Title text="D&D Near"/>
 
         <Router>
-        <Header />
-        <main class="app-content">
-            <Routes>
-                <Route path="" view=HomePage/>
-                <Route path="/dice" view=DiceRollerPage/>
-                <Route path="/*any" view=NotFound/>
-            </Routes>
-        </main>
-        <RollHistoryPanel />
+            <Header show_menu=set_show_menu />
+            <SideNav show_menu=show_menu set_show_menu=set_show_menu />
+            <main class="app-content">
+                <Routes>
+                    <Route path="" view=HomePage/>
+                    <Route path="/dice" view=DiceRollerPage/>
+                    <Route path="/*any" view=NotFound/>
+                </Routes>
+            </main>
+            <RollHistoryPanel />
         </Router>
     }
 }
