@@ -1,13 +1,31 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif;
-    text-align: center;
+    color: #e0e0e0;
+    background-color: #242527;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Import header styles */
+@import 'header';
+
+/* Main content area */
+.app-content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    color: #333;
+    flex: 1;
 }
 
-h1 {
+h2 {
     color: #4a4a4a;
     margin-bottom: 20px;
 }
@@ -19,11 +37,13 @@ a {
     border-radius: 4px;
     display: inline-block;
     margin: 5px;
+    transition: all 0.2s ease;
 }
 
 a:hover {
-    background-color: #efefff;
-    text-decoration: underline;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    text-decoration: none;
 }
 
 button {

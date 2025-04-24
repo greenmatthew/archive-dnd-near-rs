@@ -1,7 +1,7 @@
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
-use crate::components::DiceRoller;
+use crate::components::{DiceRoller, Header};
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -18,7 +18,8 @@ pub fn App() -> impl IntoView {
 
         // content for this welcome page
         <Router>
-            <main>
+            <Header />
+            <main class="app-content">
                 <Routes>
                     <Route path="" view=HomePage/>
                     <Route path="/dice" view=DiceRollerPage/>
@@ -34,8 +35,8 @@ pub fn App() -> impl IntoView {
 fn HomePage() -> impl IntoView {
     view! {
         <div>
-            <h1>"D&D Helper"</h1>
-            <p>"Welcome to your D&D Helper application. Select a tool below:"</p>
+            <h2>"Welcome"</h2>
+            <p>"Select a tool below to get started:"</p>
             
             <div class="tool-links">
                 <A href="/dice">"Dice Roller"</A>
@@ -50,8 +51,7 @@ fn HomePage() -> impl IntoView {
 fn DiceRollerPage() -> impl IntoView {
     view! {
         <div>
-            <h1>"D&D Helper - Dice Roller"</h1>
-            <A href="/">"Back to Home"</A>
+            <h2>"Dice Roller"</h2>
             <DiceRoller />
         </div>
     }
@@ -75,7 +75,7 @@ fn NotFound() -> impl IntoView {
     }
 
     view! {
-        <h1>"Not Found"</h1>
+        <h2>"Not Found"</h2>
         <p>"The page you're looking for doesn't exist."</p>
         <A href="/">"Return to Home"</A>
     }
