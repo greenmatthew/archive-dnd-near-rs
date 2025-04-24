@@ -18,6 +18,12 @@ pub fn App() -> impl IntoView {
 
         <Stylesheet href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close,menu"/>
 
+        <Link rel="icon" type_="image/x-icon" href="/assets/favicon.ico"/>
+        <Link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"/>
+        <Link rel="icon" type_="image/png" sizes="32x32" href="/assets/favicon-32x32.png"/>
+        <Link rel="icon" type_="image/png" sizes="16x16" href="/assets/favicon-16x16.png"/>
+        <Link rel="manifest" href="/assets/site.webmanifest"/>
+
         <Title text="D&D Near"/>
 
         <Router>

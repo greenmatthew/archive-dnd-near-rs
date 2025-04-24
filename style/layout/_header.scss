@@ -1,52 +1,19 @@
-// style/layout/_header.scss - update to this
+// style/layout/_header.scss
 .app-header {
     background-color: #121212;
     color: white;
     padding: 12px 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
 }
 
 .header-content {
-    max-width: 1200px;
-    margin: 0 auto;
+    /* Removed max-width to allow full-width header */
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-}
-
-.hamburger-menu {
-    position: absolute;
-    left: 0;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    
-    &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 4px;
-    }
-}
-
-.logo a {
-    color: white;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    height: 40px;
-    width: auto;
+    width: 100%;
 }
 
 .hamburger-menu {
@@ -70,4 +37,16 @@
     .material-symbols-outlined {
         line-height: 1;
     }
+}
+
+.logo a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
 }
