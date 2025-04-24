@@ -23,7 +23,7 @@ impl std::fmt::Display for DamageType {
     }
 }
 
-struct Damage {
+pub struct Damage {
     amount: u32,
     damage_type: DamageType,
 }
