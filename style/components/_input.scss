@@ -1,0 +1,17 @@
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+select {
+    padding: 8px;
+    border: 1px solid #9d4edd; /* Brighter purple border */
+    border-radius: 4px;
+    margin-right: 10px;
+    font-size: 14px;
+    width: 120px;
+    background-color: #3a3a3c; /* Darker input background */
+    color: #ffffff; /* Light text color */
+}

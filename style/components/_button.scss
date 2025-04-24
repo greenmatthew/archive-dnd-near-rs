@@ -1,0 +1,15 @@
+button {
+    flex-grow: 1;
+    padding: 10px;
+    margin: 5px;
+    background-color: #5a189a; /* Original purple color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #7b2cbf; /* Lighter purple for hover */
+}
