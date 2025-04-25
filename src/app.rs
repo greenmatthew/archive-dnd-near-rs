@@ -1,9 +1,9 @@
-use leptos::{IntoView, component, create_signal, provide_context, view};
+use leptos::{IntoView, Show, component, create_signal, SignalGet, provide_context, view};
 use leptos_meta::{Link, Meta, Stylesheet, Title, provide_meta_context};
 use leptos_router::{A, Route, Router, Routes};
 use crate::components::{DiceRoller, RollHistoryPanel, SideNav};
 use crate::layouts::Header;
-use crate::ui::{TabSystem, TabPanel, TabItem};
+use crate::ui::{TabContainer, TabItem};
 use crate::models::RollResult;
 
 #[must_use]
@@ -114,21 +114,25 @@ fn DiceRollerPage() -> impl IntoView {
     
     view! {
         <div class="dice-section-container">
-            <TabSystem 
+            <TabContainer 
                 tabs=tabs
                 selected_tab=selected_tab
                 set_selected_tab=set_selected_tab
             >
-                // Standard Dice Roller Tab
-                <TabPanel tab_id="standard".to_string() selected_tab=selected_tab>
-                    <SolstoraRollerContent />
-                </TabPanel>
+                // We'll use the Show component from Leptos to conditionally render content
+                // based on the selected tab
+                <Show when=move || selected_tab.get() == "standard">
+                    <div class="tab-content active">
+                        <SolstoraRollerContent />
+                    </div>
+                </Show>
                 
-                // Solstora Calculator Tab - placeholder for now
-                <TabPanel tab_id="solstora".to_string() selected_tab=selected_tab>
-                    <SolstoraCalculatorContent />
-                </TabPanel>
-            </TabSystem>
+                <Show when=move || selected_tab.get() == "solstora">
+                    <div class="tab-content active">
+                        <SolstoraCalculatorContent />
+                    </div>
+                </Show>
+            </TabContainer>
         </div>
     }
 }
@@ -138,7 +142,6 @@ fn DiceRollerPage() -> impl IntoView {
 fn SolstoraRollerContent() -> impl IntoView {
     view! {
         <div>
-            <h3 class="text-center">"Dice Roller"</h3>
             <DiceRoller />
         </div>
     }

@@ -9,9 +9,9 @@ pub struct TabItem {
     pub title: String,
 }
 
-/// A reusable tab component
+/// A reusable tab container component
 #[component]
-pub fn TabSystem(
+pub fn TabContainer(
     /// List of tab items
     tabs: Vec<TabItem>,
     /// Signal for the currently selected tab
@@ -25,7 +25,7 @@ pub fn TabSystem(
     let handle_tab_click = move |tab_id: String| {
         set_selected_tab.set(tab_id);
     };
-
+    
     view! {
         <div class="tab-container">
             <div class="tab-buttons">
@@ -47,29 +47,11 @@ pub fn TabSystem(
                     }
                 }).collect::<Vec<_>>()}
             </div>
-            {children()}
-        </div>
-    }
-}
-
-/// Component to wrap content for a specific tab
-#[component]
-pub fn TabPanel(
-    /// The unique identifier for this tab panel, must match a tab id
-    tab_id: String,
-    /// Signal for the currently selected tab
-    selected_tab: ReadSignal<String>,
-    /// Children components within this tab panel
-    children: Children,
-) -> impl IntoView {
-    // Clone the tab_id before it gets moved into the closure
-    let tab_id_clone = tab_id.clone();
-    
-    let is_active = move || selected_tab.get() == tab_id_clone;
-    
-    view! {
-        <div id={tab_id} class="tab-content" class:active=is_active>
-            {children()}
+            
+            // Render the tab content area
+            <div class="tab-content-container">
+                {children()}
+            </div>
         </div>
     }
 }

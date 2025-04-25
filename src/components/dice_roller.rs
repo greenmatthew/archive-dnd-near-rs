@@ -58,8 +58,6 @@ pub fn DiceRoller() -> impl IntoView {
 
     view! {
         <div class="dice-roller">
-            <h2>"Dice Roller"</h2>
-            
             <div class="input-group">
                 <input 
                     type="text" 
