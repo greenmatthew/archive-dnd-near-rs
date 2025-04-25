@@ -1,11 +1,12 @@
-use leptos::*;
-use leptos_meta::*;
-use leptos_router::*;
+use leptos::{IntoView, component, create_signal, provide_context, view};
+use leptos_meta::{Link, Meta, Stylesheet, Title, provide_meta_context};
+use leptos_router::{A, Route, Router, Routes};
 use crate::components::{DiceRoller, RollHistoryPanel, SideNav};
-use crate::layouts::{Header};
+use crate::layouts::Header;
 use crate::ui::{TabSystem, TabPanel, TabItem};
 use crate::models::RollResult;
 
+#[must_use]
 #[component]
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
