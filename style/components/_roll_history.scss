@@ -1,4 +1,20 @@
-/* Roll History styling */
+.roll-history {
+    margin-top: 20px;
+    text-align: left;
+    background-color: white;
+    border-radius: 6px;
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.empty-message {
+    color: #888888;
+    text-align: center;
+    margin-top: 50px;
+    font-style: italic;
+}
+
 .roll-result {
     padding: 10px;
     margin-bottom: 8px;
@@ -11,9 +27,12 @@
     border-left: 3px solid #5a189a;
 }
 
-.empty-message {
-    color: #888888;
-    text-align: center;
-    margin-top: 50px;
-    font-style: italic;
+// .roll-result:nth-child(even) {
+//     background-color: #f5f5f5;
+// }
+
+.error-message {
+    color: #d32f2f;
+    margin: 10px 0;
+    font-weight: bold;
 }

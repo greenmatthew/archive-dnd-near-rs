@@ -1,8 +1,6 @@
-/* Tab Styling - Exactly matching the provided HTML structure */
 .tab-container {
     width: 100%;
-    max-width: 600px;
-    margin: 0 auto 20px auto;
+    margin-bottom: 20px;
 }
 
 .tab-buttons {
@@ -11,26 +9,26 @@
 }
 
 .tab-button {
-    padding: 10px 20px;
+    flex-grow: 0;
+    // padding: 10px 20px;
     background-color: #3a3a3c; /* Darker tab background */
     border: none;
     border-radius: 5px 5px 0 0;
     cursor: pointer;
-    margin-right: 5px;
+    margin: 0;
+    margin-right: 5;
     font-weight: bold;
     color: #e0e0e0; /* Light text for dark background */
     transition: all 0.3s ease;
-    flex: 1; /* Make buttons fill the space evenly */
-    text-align: center;
-    
-    &:hover {
-        background-color: #5a189a;
-    }
-    
-    &.active {
-        background-color: #9d4edd; /* Brighter purple for active tab */
-        color: white;
-    }
+}
+
+.tab-button:last-child {
+    margin-right: 0;
+}
+
+.tab-button.active {
+    background-color: #9d4edd; /* Brighter purple for active tab */
+    color: white;
 }
 
 .tab-content {
@@ -38,127 +36,8 @@
     padding: 20px;
     background-color: #2d2d30; /* Darker content background */
     border-radius: 0 0 5px 5px;
-    
-    &.active {
-        display: block;
-    }
 }
 
-/* Dice section styling */
-.dice-section {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.dice-button {
-    flex-grow: 1;
-    padding: 10px;
-    margin: 5px;
-    background-color: #5a189a; /* Original purple color */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    
-    &:hover {
-        background-color: #7b2cbf; /* Lighter purple for hover */
-    }
-}
-
-/* Modifier section styling */
-.modifier-section {
-    margin-bottom: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    
-    label {
-        display: flex;
-        align-items: center;
-        margin-right: 10px;
-    }
-}
-
-.modifier-input, .quantity-input {
-    width: 60px;
-    padding: 8px;
-    border: 1px solid #9d4edd; /* Brighter purple border */
-    border-radius: 4px;
-    background-color: #3a3a3c; /* Darker input background */
-    color: #ffffff; /* Light text color */
-    margin-left: 5px;
-}
-
-.quantity-input {
-    width: 40px;
-}
-
-/* Roll button styling */
-.roll-button {
+.tab-content.active {
     display: block;
-    width: 100%;
-    padding: 12px;
-    background-color: #9d4edd; /* Brighter purple for button */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-bottom: 15px;
-    
-    &:hover {
-        background-color: #7b2cbf; /* Original purple color */
-    }
-}
-
-/* Result section styling */
-.result-section {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.result-display {
-    font-size: 24px;
-    font-weight: bold;
-    color: #e0e0e0; /* Light color for visibility */
-    margin-bottom: 10px;
-}
-
-.result-details {
-    color: #b0b0b0; /* Light gray for details */
-}
-
-/* Advanced section styling */
-.advanced-section {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(157, 78, 221, 0.3);
-}
-
-.custom-roll-section {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 10px;
-    
-    span {
-        color: #e0e0e0;
-        margin: 0 5px;
-    }
-    
-    input {
-        margin: 0 5px;
-    }
-    
-    .dice-button {
-        margin-left: 10px;
-    }
 }

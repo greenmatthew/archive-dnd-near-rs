@@ -73,12 +73,19 @@ pub fn App() -> impl IntoView {
 fn HomePage() -> impl IntoView {
     view! {
         <div>
-            <h2>"Welcome"</h2>
-            <p>"Select a tool below to get started:"</p>
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="dice-roller">Dice Roller</button>
+                    <button class="tab-button" data-tab="custom-calculator">Solstora Calculator</button>
+                </div>
             
-            <div class="tool-links">
-                <A href="/dice">"Dice Roller"</A>
-                {/* Add more tools here as they are developed */}
+                <div id="dice-roller" class="tab-content active">
+                    <p>Hello</p>
+                </div>
+            
+                <div id="custom-calculator" class="tab-content">
+                    <p>World!</p>
+                </div>
             </div>
         </div>
     }
