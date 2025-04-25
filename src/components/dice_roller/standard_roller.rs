@@ -1,5 +1,5 @@
 use leptos::*;
-use crate::models::dice::{DiceRoll, RollResult, common};
+use crate::models::dice::{DiceRoll, DiceRollResult, DiceRollOp};
 use std::collections::HashMap;
 
 #[component]
@@ -11,10 +11,10 @@ pub fn StandardRoller() -> impl IntoView {
     let (error_msg, set_error_msg) = create_signal(String::new());
     
     // Local signal to store the most recent roll result
-    let (last_roll, set_last_roll) = create_signal::<Option<RollResult>>(None);
+    let (last_roll, set_last_roll) = create_signal::<Option<DiceRollResult>>(None);
     
     // Get the global roll results setter from context
-    let set_global_roll_results = use_context::<WriteSignal<Vec<RollResult>>>()
+    let set_global_roll_results = use_context::<WriteSignal<Vec<DiceRollResult>>>()
         .expect("set_roll_results should be provided");
     
     // Function to increment a specific die
@@ -41,41 +41,40 @@ pub fn StandardRoller() -> impl IntoView {
         
         // Create all dice rolls based on counts
         let mut all_results = Vec::new();
-        let mut combined_roll = None;
+        let mut combined_dice_results = Vec::new();
+        let mut combined_total = 0;
         
         for (&sides, &count) in dice_counts.get().iter() {
             if count > 0 {
-                let dice = DiceRoll::new(count, sides, 0);
-                let result = dice.roll_with_details();
+                let dice = DiceRoll::create(sides, count, None, Some(0));
+                let result = dice.roll();
                 
-                // First result becomes our base, others get merged
-                if combined_roll.is_none() {
-                    combined_roll = Some(result.clone());
-                } else if let Some(ref mut combined) = combined_roll {
-                    // This is simplified - we'd need to properly combine the results
-                    // in a real implementation by joining roll details
-                    let mut new_combined = result.clone();
-                    new_combined.total += combined.total;
-                    // Combine individual rolls too
-                    let mut new_rolls = combined.individual_rolls.clone();
-                    new_rolls.extend(result.individual_rolls.clone());
-                    new_combined.individual_rolls = new_rolls;
-                    
-                    *combined = new_combined;
-                }
+                // Sum up the total
+                combined_total += result.result;
+                
+                // Collect all dice results
+                combined_dice_results.extend(result.dice_results.clone());
                 
                 all_results.push(result);
             }
         }
         
-        // Set the last roll result
-        if let Some(result) = combined_roll {
-            set_last_roll.set(Some(result.clone()));
+        // Create a combined result
+        if !all_results.is_empty() {
+            // Create a combined DiceRollResult
+            let combined_result = DiceRollResult {
+                result: combined_total,
+                dice_results: combined_dice_results,
+                operation: None,
+                modifier: Some(0),
+            };
+            
+            set_last_roll.set(Some(combined_result.clone()));
             
             // Update the global roll history
             set_global_roll_results.update(|results| {
                 // Add new result at the beginning of the list
-                results.insert(0, result);
+                results.insert(0, combined_result);
                 // Keep only the last 10 results
                 if results.len() > 10 {
                     results.truncate(10);
@@ -187,7 +186,7 @@ pub fn StandardRoller() -> impl IntoView {
             // Always display the last roll container, but with different content based on whether a roll has been made
             <div class="last-roll-container">
                 <div class="last-roll-value">
-                    {move || last_roll.get().map(|result| result.total.to_string()).unwrap_or_else(|| "-".to_string())}
+                    {move || last_roll.get().map(|result| result.result.to_string()).unwrap_or_else(|| "-".to_string())}
                 </div>
                 <div class="last-roll-details">
                     {move || last_roll.get().map(|result| result.to_string()).unwrap_or_default()}

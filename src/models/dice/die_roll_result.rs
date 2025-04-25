@@ -1,7 +1,7 @@
 use std::fmt;
 use super::Die;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct DieRollResult {
     pub die: Die,
     pub result: u32,

@@ -1,11 +1,12 @@
 use std::fmt;
 use super::{DieRollResult, DiceRollOp};
 
+#[derive(Clone)]
 pub struct DiceRollResult {
-    result: i32, // Changed to i32 to match with modifier
-    dice_results: Vec<DieRollResult>,
-    operation: Option<DiceRollOp>,
-    modifier: Option<i32>,
+    pub result: i32, // Changed to i32 to match with modifier
+    pub dice_results: Vec<DieRollResult>,
+    pub operation: Option<DiceRollOp>,
+    pub modifier: Option<i32>,
 }
 
 impl DiceRollResult {

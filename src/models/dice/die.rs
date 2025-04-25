@@ -1,7 +1,7 @@
 use std::fmt;
 use rand::Rng;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Die {
     pub sides: u32
 }

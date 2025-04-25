@@ -3,7 +3,7 @@ use leptos_meta::{Link, Meta, Stylesheet, Title, provide_meta_context};
 use leptos_router::{A, Route, Router, Routes};
 use crate::components::{DiceRoller, RollHistoryPanel, SideNav};
 use crate::layouts::Header;
-use crate::models::RollResult;
+use crate::models::DiceRollResult;
 
 #[must_use]
 #[component]
@@ -18,7 +18,7 @@ pub fn App() -> impl IntoView {
     let (show_roll_history, set_show_roll_history) = create_signal(false);
     
     // Create a resource to store roll results globally
-    let (roll_results, set_roll_results) = create_signal::<Vec<RollResult>>(vec![]);
+    let (roll_results, set_roll_results) = create_signal::<Vec<DiceRollResult>>(vec![]);
     
     // Create context for roll results so any component can access it
     provide_context(set_roll_results);

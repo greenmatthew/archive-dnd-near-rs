@@ -1,6 +1,6 @@
 use leptos::*;
 use crate::ui::{SlidePanel, SlideDirection};
-use crate::models::DiceRollResult;
+use crate::models::dice::DiceRollResult; // Updated import path
 
 #[component]
 pub fn RollHistoryPanel(
@@ -28,7 +28,7 @@ pub fn RollHistoryPanel(
                     view! {
                         <For
                             each=move || roll_results.get()
-                            key=|result| format!("{:?}-{}", result.individual_rolls, result.total)
+                            key=|result| format!("{:?}-{}", result.dice_results, result.result) // This needs to be updated
                             let:result
                         >
                             <div class="roll-result">
