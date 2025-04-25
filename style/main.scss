@@ -121,12 +121,12 @@ a:hover {
     text-decoration: none;
 }
 
-
-
 @import 'components/input';
 @import 'components/button';
 @import 'components/slide_panel';
+@import 'components/tabs';
 @import 'components/roll_history';
 @import 'components/dice_roller';
+
 @import 'layout/side_nav';
 @import 'layout/header';
