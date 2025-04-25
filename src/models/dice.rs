@@ -157,7 +157,7 @@ impl fmt::Display for RollResult {
             if i > 0 {
                 write!(f, ", ")?;
             }
-            write!(f, "{}", roll)?;
+            write!(f, "{roll}")?;
         }
         
         write!(f, "]")?;
