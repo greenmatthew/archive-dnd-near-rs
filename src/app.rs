@@ -1,7 +1,9 @@
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
-use crate::components::{DiceRoller, Header, RollHistoryPanel, SideNav, TabSystem, TabPanel, TabItem};
+use crate::components::{DiceRoller, RollHistoryPanel, SideNav};
+use crate::layouts::{Header};
+use crate::ui::{TabSystem, TabPanel, TabItem};
 use crate::models::RollResult;
 
 #[component]

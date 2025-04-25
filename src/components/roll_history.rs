@@ -1,5 +1,5 @@
 use leptos::*;
-use crate::components::{SlidePanel, SlideDirection};
+use crate::ui::{SlidePanel, SlideDirection};
 use crate::models::RollResult;
 
 #[component]

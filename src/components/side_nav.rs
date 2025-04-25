@@ -1,6 +1,6 @@
 use leptos::*;
 use leptos_router::*;
-use crate::components::{SlidePanel, SlideDirection};
+use crate::ui::{SlidePanel, SlideDirection};
 
 #[component]
 pub fn SideNav(show_menu: ReadSignal<bool>, set_show_menu: WriteSignal<bool>) -> impl IntoView {
