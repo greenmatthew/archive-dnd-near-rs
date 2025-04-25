@@ -130,12 +130,10 @@ impl fmt::Display for DiceRoll {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}d{}", self.count, self.sides)?;
         
-        if self.modifier > 0 {
-            write!(f, "+{}", self.modifier)
-        } else if self.modifier < 0 {
-            write!(f, "{}", self.modifier) // The negative sign is included in the number
-        } else {
-            Ok(())
+        match self.modifier.cmp(&0) {
+            std::cmp::Ordering::Greater => write!(f, "+{}", self.modifier),
+            std::cmp::Ordering::Less => write!(f, "{}", self.modifier), // The negative sign is included in the number
+            std::cmp::Ordering::Equal => Ok(()),
         }
     }
 }
