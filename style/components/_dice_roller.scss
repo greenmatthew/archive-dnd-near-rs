@@ -1,0 +1,24 @@
+.last-roll-container {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #372f3c;
+    border-radius: 8px;
+    border-left: 4px solid #9d4edd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.last-roll-container h3 {
+    margin: 0 0 10px 0;
+    color: #e0e0e0;
+    font-size: 18px;
+}
+
+.last-roll-result {
+    font-family: monospace;
+    font-size: 18px;
+    color: #ffffff;
+    padding: 10px;
+    background-color: #3a3a3c;
+    border-radius: 4px;
+    text-align: center;
+}
