@@ -9,29 +9,75 @@
     flex-wrap: wrap;
     justify-content: center;
     margin: 15px 0;
+    gap: 10px;
+}
+
+.common-dice button {
+    flex-grow: 0;
+    min-width: 60px;
+    transition: all 0.3s ease;
+    
+    &.active {
+        background-color: #9d4edd; /* Brighter purple for active state */
+        transform: scale(1.05);
+        box-shadow: 0 0 8px rgba(157, 78, 221, 0.6);
+    }
+}
+
+.roll-button-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0 20px;
+    padding: 0 10px;
+    width: 100%;
+}
+
+.roll-button {
+    width: 100%;
+    font-size: 1.2em;
+    padding: 12px 24px;
+    background-color: #9d4edd; /* Brighter purple to match image */
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    
+    &:hover:not(:disabled) {
+        background-color: #a74ede; /* Slightly lighter on hover */
+    }
+    
+    &:disabled {
+        background-color: #666;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
 }
 
 .last-roll-container {
     margin-top: 20px;
-    padding: 15px;
-    background-color: #372f3c;
-    border-radius: 8px;
-    border-left: 4px solid #9d4edd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
-.last-roll-container h3 {
-    margin: 0 0 10px 0;
-    color: #e0e0e0;
-    font-size: 18px;
-}
-
-.last-roll-result {
-    font-family: monospace;
-    font-size: 18px;
+.last-roll-value {
+    font-size: 36px;
+    font-weight: bold;
     color: #ffffff;
-    padding: 10px;
-    background-color: #3a3a3c;
-    border-radius: 4px;
     text-align: center;
+    margin-bottom: 4px;
+    width: 100%;
+    min-height: 50px; /* Ensures consistent height even when empty */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.last-roll-details {
+    font-family: monospace;
+    font-size: 14px;
+    color: #a0a0a0;
+    text-align: center;
+    min-height: 20px; /* Ensures consistent height even when empty */
 }

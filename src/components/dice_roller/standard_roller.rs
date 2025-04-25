@@ -3,8 +3,8 @@ use crate::models::dice::{DiceRoll, RollResult, common};
 
 #[component]
 pub fn StandardRoller() -> impl IntoView {
-    // Signal for the dice notation input
-    let (dice_notation, set_dice_notation) = create_signal(String::from("2d6"));
+    // Signal for the selected dice
+    let (selected_dice, set_selected_dice) = create_signal::<Option<DiceRoll>>(None);
     
     // Signal for any error message
     let (error_msg, set_error_msg) = create_signal(String::new());
@@ -20,54 +20,72 @@ pub fn StandardRoller() -> impl IntoView {
     let roll_dice = move |_| {
         set_error_msg.set(String::new()); // Clear any previous error
         
-        match DiceRoll::from_notation(&dice_notation.get()) {
-            Some(dice) => {
-                let result = dice.roll_with_details();
-                // Set the local last roll result
-                set_last_roll.set(Some(result.clone()));
-                // Update the global roll history
-                set_global_roll_results.update(|results| {
-                    // Add new result at the beginning of the list
-                    results.insert(0, result);
-                    // Keep only the last 10 results
-                    if results.len() > 10 {
-                        results.truncate(10);
-                    }
-                });
-            },
-            None => {
-                set_error_msg.set(format!("Invalid dice notation: {}", dice_notation.get()));
-            }
+        if let Some(dice) = selected_dice.get() {
+            let result = dice.roll_with_details();
+            // Set the local last roll result
+            set_last_roll.set(Some(result.clone()));
+            // Update the global roll history
+            set_global_roll_results.update(|results| {
+                // Add new result at the beginning of the list
+                results.insert(0, result);
+                // Keep only the last 10 results
+                if results.len() > 10 {
+                    results.truncate(10);
+                }
+            });
+        } else {
+            set_error_msg.set(String::from("Please select a die to roll first"));
         }
     };
     
-    // Common dice buttons
-    let roll_common = move |dice: DiceRoll| {
-        set_dice_notation.set(dice.to_string());
-        let result = dice.roll_with_details();
-        // Set the local last roll result
-        set_last_roll.set(Some(result.clone()));
-        // Update the global roll history
-        set_global_roll_results.update(|results| {
-            results.insert(0, result);
-            if results.len() > 10 {
-                results.truncate(10);
-            }
-        });
+    // Function to handle selecting a die
+    let select_die = move |dice: DiceRoll| {
+        set_selected_dice.set(Some(dice));
     };
 
     view! {
         <div class="standard-dice-roller">
-            <div class="input-group">
-                <input 
-                    type="text" 
-                    prop:value=move || dice_notation.get()
-                    on:input=move |ev| {
-                        set_dice_notation.set(event_target_value(&ev));
-                    }
-                    placeholder="e.g., 2d6+3"
-                />
-                <button on:click=roll_dice>"Roll!"</button>
+            // Common dice buttons
+            <div class="common-dice">
+                <button 
+                    on:click=move |_| select_die(common::d4())
+                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 4 && d.count == 1 && d.modifier == 0)
+                >"d4"</button>
+                <button 
+                    on:click=move |_| select_die(common::d6())
+                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 6 && d.count == 1 && d.modifier == 0)
+                >"d6"</button>
+                <button 
+                    on:click=move |_| select_die(common::d8())
+                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 8 && d.count == 1 && d.modifier == 0)
+                >"d8"</button>
+                <button 
+                    on:click=move |_| select_die(common::d10())
+                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 10 && d.count == 1 && d.modifier == 0)
+                >"d10"</button>
+                <button 
+                    on:click=move |_| select_die(common::d12())
+                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 12 && d.count == 1 && d.modifier == 0)
+                >"d12"</button>
+                <button 
+                    on:click=move |_| select_die(common::d20())
+                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 20 && d.count == 1 && d.modifier == 0)
+                >"d20"</button>
+                <button 
+                    on:click=move |_| select_die(common::d100())
+                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 100 && d.count == 1 && d.modifier == 0)
+                >"d100"</button>
+            </div>
+            
+            // Roll button (now below the dice buttons)
+            <div class="roll-button-container">
+                <button 
+                    on:click=roll_dice
+                    class="roll-button"
+                    disabled=move || selected_dice.get().is_none()
+                >
+                    "Roll!"
+                </button>
             </div>
             
             // Error message (only shown when there's an error)
@@ -77,26 +95,15 @@ pub fn StandardRoller() -> impl IntoView {
                 </div>
             </Show>
             
-            // Common dice buttons
-            <div class="common-dice">
-                <button on:click=move |_| roll_common(common::d4())>"d4"</button>
-                <button on:click=move |_| roll_common(common::d6())>"d6"</button>
-                <button on:click=move |_| roll_common(common::d8())>"d8"</button>
-                <button on:click=move |_| roll_common(common::d10())>"d10"</button>
-                <button on:click=move |_| roll_common(common::d12())>"d12"</button>
-                <button on:click=move |_| roll_common(common::d20())>"d20"</button>
-                <button on:click=move |_| roll_common(common::d100())>"d100"</button>
-            </div>
-            
-            // Display the last roll result
-            <Show when=move || last_roll.get().is_some()>
-                <div class="last-roll-container">
-                    <h3>"Last Roll"</h3>
-                    <div class="last-roll-result">
-                        {move || last_roll.get().map(|result| result.to_string()).unwrap_or_default()}
-                    </div>
+            // Always display the last roll container, but with different content based on whether a roll has been made
+            <div class="last-roll-container">
+                <div class="last-roll-value">
+                    {move || last_roll.get().map(|result| result.total.to_string()).unwrap_or_else(|| "-".to_string())}
                 </div>
-            </Show>
+                <div class="last-roll-details">
+                    {move || last_roll.get().map(|result| result.to_string()).unwrap_or_default()}
+                </div>
+            </div>
         </div>
     }
 }
