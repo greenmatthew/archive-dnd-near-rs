@@ -1,99 +1,14 @@
-/* Roll History Panel */
-.roll-history-panel-container {
-    position: fixed;
-    right: 0;
-    height: 100%;
-    z-index: 100; /* Ensure it's above other content */
-    display: flex;
-}
-
-/* The slide-out panel with toggle button */
-.roll-history-panel {
-    position: relative;
-    width: 300px;
-    height: 100%;
-    background-color: #2d2d30;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
-    transform: translateX(300px); /* Start with panel moved off-screen */
-    transition: transform 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-
-    &.open {
-        transform: translateX(0);
-    }
-}
-
-/* Toggle button */
-.panel-toggle {
-    position: absolute;
-    left: -24px; /* Position toggle to the left of the panel */
-    top: 84px;
-    width: 24px;
-    height: 60px;
-    background-color: #2d2d30;
-    border: none;
-    border-radius: 4px 0 0 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
-
-    &:hover {
-        background-color: #3d3d40;
-    }
-
-    .toggle-arrow {
-        font-size: 20px;
-        font-weight: bold;
-        color: #ffffff;
-    }
-}
-
-/* Panel header with title and close button */
-.panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 15px;
-    background-color: #1e1e20;
-    border-bottom: 1px solid #3a3a3c;
-
-    h3 {
-        margin: 0;
-        color: #ffffff;
-        font-size: 16px;
-    }
-
-    .close-button {
-        background: none;
-        border: none;
-        color: #a0a0a0;
-        font-size: 24px;
-        cursor: pointer;
-        padding: 0;
-        margin: 0;
-        width: 24px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &:hover {
-            color: #ffffff;
-            background: none;
-        }
-    }
-}
-
-/* Panel content area */
-.panel-content {
-    padding: 15px;
-    flex-grow: 1;
-    overflow-y: auto;
+/* Roll History styling */
+.roll-result {
+    padding: 10px;
+    margin-bottom: 8px;
+    background-color: #3a3a3c;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.4;
     color: #e0e0e0;
+    border-left: 3px solid #5a189a;
 }
 
 .empty-message {

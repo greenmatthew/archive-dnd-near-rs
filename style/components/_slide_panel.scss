@@ -60,6 +60,46 @@
     }
 }
 
+// Panel header styling
+.panel-header {
+    display: flex;
+    align-items: center;
+    background-color: #1e1e20;
+    border-bottom: 1px solid #3a3a3c;
+    height: 56px; // Fixed height for header
+    
+    h3 {
+        margin: 0;
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 500;
+        padding: 0 16px;
+        flex: 1; // Take remaining width
+    }
+    
+    .close-button {
+        background: none;
+        border: none;
+        color: #a0a0a0;
+        font-size: 24px;
+        cursor: pointer;
+        width: 40px; // Fixed width
+        height: 40px; // Fixed height
+        flex: 0 0 40px; // Fixed width, don't grow, don't shrink
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px; // Space from the right edge
+        border-radius: 4px;
+        transition: color 0.2s, background-color 0.2s;
+        
+        &:hover {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+}
+
 // Panel content - add specific handling for links
 .panel-content {
     padding: 15px;
@@ -71,27 +111,5 @@
         position: relative;
         z-index: 1002; // Ensure clickable elements are above panel
         touch-action: manipulation; // Improves touch behavior
-    }
-}
-
-// Improve touch targeting for buttons
-.close-button {
-    background: none;
-    border: none;
-    color: #a0a0a0;
-    cursor: pointer;
-    padding: 8px; // Increase padding for better touch target
-    margin: 0;
-    min-width: 44px; // Minimum touch target size
-    min-height: 44px; // Minimum touch target size
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 1002; // Ensure above panel
-
-    &:hover {
-        color: #ffffff;
-        background: rgba(255, 255, 255, 0.1);
     }
 }

@@ -22,7 +22,7 @@ pub fn SlidePanel(
     };
 
     // Get the class and toggle position based on direction
-    let (panel_class) = match direction {
+    let panel_class = match direction {
         SlideDirection::Left => "slide-panel-left",
         SlideDirection::Right => "slide-panel-right",
     };

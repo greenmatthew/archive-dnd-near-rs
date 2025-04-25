@@ -2,6 +2,7 @@ use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
 use crate::components::{DiceRoller, Header, RollHistoryPanel, SideNav};
+use crate::models::RollResult;
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -10,6 +11,15 @@ pub fn App() -> impl IntoView {
     
     // Signal to track if the menu is open or closed
     let (show_menu, set_show_menu) = create_signal(false);
+    
+    // Signal to track if the roll history panel is open or closed
+    let (show_roll_history, set_show_roll_history) = create_signal(false);
+    
+    // Create a resource to store roll results globally
+    let (roll_results, set_roll_results) = create_signal::<Vec<RollResult>>(vec![]);
+    
+    // Create context for roll results so any component can access it
+    provide_context(set_roll_results);
 
     view! {
         // injects a stylesheet into the document <head>
@@ -34,8 +44,14 @@ pub fn App() -> impl IntoView {
         <Title text="D&D Near"/>
 
         <Router>
-            <Header show_menu=set_show_menu />
-            <SideNav show_menu=show_menu set_show_menu=set_show_menu />
+            <Header 
+                show_menu=set_show_menu 
+                show_roll_history=set_show_roll_history 
+            />
+            <SideNav 
+                show_menu=show_menu 
+                set_show_menu=set_show_menu 
+            />
             <main class="app-content">
                 <Routes>
                     <Route path="" view=HomePage/>
@@ -43,7 +59,11 @@ pub fn App() -> impl IntoView {
                     <Route path="/*any" view=NotFound/>
                 </Routes>
             </main>
-            <RollHistoryPanel />
+            <RollHistoryPanel 
+                roll_results=roll_results
+                is_open=show_roll_history 
+                set_open=set_show_roll_history 
+            />
         </Router>
     }
 }

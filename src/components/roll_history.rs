@@ -1,48 +1,43 @@
 use leptos::*;
+use crate::components::{SlidePanel, SlideDirection};
+use crate::models::RollResult;
 
 #[component]
-pub fn RollHistoryPanel() -> impl IntoView {
-    // Signal to track if the panel is open or closed
-    let (is_open, set_is_open) = create_signal(false);
-    
-    // Toggle panel visibility
-    let toggle_panel = move |_| {
-        set_is_open.update(|open| *open = !*open);
-    };
-    
-    // Close the panel
-    let close_panel = move |_| {
-        set_is_open.set(false);
-    };
-    
+pub fn RollHistoryPanel(
+    roll_results: ReadSignal<Vec<RollResult>>,
+    is_open: ReadSignal<bool>,
+    set_open: WriteSignal<bool>
+) -> impl IntoView {
     view! {
-        <div class="roll-history-panel-container">
-            <div 
-                class="roll-history-panel" 
-                class:open=move || is_open.get()
-            >
-                // Toggle button (arrow) - now attached to the panel
-                <button 
-                    class="panel-toggle"
-                    on:click=toggle_panel
-                >
-                    <span class="toggle-arrow">
-                        {move || if is_open.get() { "›" } else { "‹" }}
-                    </span>
-                </button>
-                
-                <div class="panel-header">
-                    <h3>"Roll History"</h3>
-                    <button class="close-button" on:click=close_panel>"×"</button>
-                </div>
-                
-                <div class="panel-content">
-                    // Panel is empty by design - will be filled later
-                    <div class="empty-message">
-                        "Roll history panel (empty by design)"
-                    </div>
-                </div>
-            </div>
-        </div>
+        <SlidePanel 
+            title="Roll History".to_string()
+            is_open=is_open
+            set_open=set_open
+            direction=SlideDirection::Right
+            width=300
+        >
+            {move || {
+                let results = roll_results.get();
+                if results.is_empty() {
+                    view! {
+                        <div class="empty-message">
+                            "No dice rolls yet. Use the dice roller to see your roll history."
+                        </div>
+                    }.into_view()
+                } else {
+                    view! {
+                        <For
+                            each=move || roll_results.get()
+                            key=|result| format!("{:?}-{}", result.individual_rolls, result.total)
+                            let:result
+                        >
+                            <div class="roll-result">
+                                {move || result.to_string()}
+                            </div>
+                        </For>
+                    }.into_view()
+                }
+            }}
+        </SlidePanel>
     }
 }

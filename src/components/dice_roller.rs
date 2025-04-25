@@ -6,11 +6,12 @@ pub fn DiceRoller() -> impl IntoView {
     // Signal for the dice notation input
     let (dice_notation, set_dice_notation) = create_signal(String::from("2d6"));
     
-    // Signal for storing roll results
-    let (roll_results, set_roll_results) = create_signal::<Vec<RollResult>>(vec![]);
-    
     // Signal for any error message
     let (error_msg, set_error_msg) = create_signal(String::new());
+    
+    // Get the global roll results setter from context
+    let set_global_roll_results = use_context::<WriteSignal<Vec<RollResult>>>()
+        .expect("set_roll_results should be provided");
     
     // Handle the roll action
     let roll_dice = move |_| {
@@ -19,7 +20,7 @@ pub fn DiceRoller() -> impl IntoView {
         match DiceRoll::from_notation(&dice_notation.get()) {
             Some(dice) => {
                 let result = dice.roll_with_details();
-                set_roll_results.update(|results| {
+                set_global_roll_results.update(|results| {
                     // Add new result at the beginning of the list
                     results.insert(0, result);
                     // Keep only the last 10 results
@@ -38,7 +39,7 @@ pub fn DiceRoller() -> impl IntoView {
     let roll_common = move |dice: DiceRoll| {
         set_dice_notation.set(dice.to_string());
         let result = dice.roll_with_details();
-        set_roll_results.update(|results| {
+        set_global_roll_results.update(|results| {
             results.insert(0, result);
             if results.len() > 10 {
                 results.truncate(10);
@@ -80,19 +81,7 @@ pub fn DiceRoller() -> impl IntoView {
                 <button on:click=move |_| roll_common(common::d100())>"d100"</button>
             </div>
             
-            // Roll history
-            <div class="roll-history">
-                <h3>"Roll History"</h3>
-                <For
-                    each=move || roll_results.get()
-                    key=|result| format!("{:?}-{}", result.individual_rolls, result.total)
-                    let:result
-                >
-                    <div class="roll-result">
-                        {move || result.to_string()}
-                    </div>
-                </For>
-            </div>
+            // Note: No local roll history display anymore, it's in the global slide panel
         </div>
     }
 }
