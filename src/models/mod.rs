@@ -3,4 +3,4 @@ pub mod dice;
 
 // Re-export common types
 pub use damage::{DamageType, Damage};
-pub use dice::{DiceRoll, RollResult};
+pub use dice::{DiceRoll, DiceRollResult};

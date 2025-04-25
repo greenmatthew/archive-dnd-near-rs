@@ -1,10 +1,10 @@
 use leptos::*;
 use crate::ui::{SlidePanel, SlideDirection};
-use crate::models::RollResult;
+use crate::models::DiceRollResult;
 
 #[component]
 pub fn RollHistoryPanel(
-    roll_results: ReadSignal<Vec<RollResult>>,
+    roll_results: ReadSignal<Vec<DiceRollResult>>,
     is_open: ReadSignal<bool>,
     set_open: WriteSignal<bool>
 ) -> impl IntoView {

@@ -81,3 +81,65 @@
     text-align: center;
     min-height: 20px; /* Ensures consistent height even when empty */
 }
+
+.common-dice button {
+    flex-grow: 0;
+    min-width: 60px;
+    transition: all 0.3s ease;
+    position: relative; /* Required for absolute positioning of the counter */
+    
+    &.active {
+        background-color: #9d4edd; /* Brighter purple for active state */
+        transform: scale(1.05);
+        box-shadow: 0 0 8px rgba(157, 78, 221, 0.6);
+    }
+}
+
+/* Dice counter badge styling */
+.dice-count {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background-color: #ff4081; /* A bright pink color that stands out */
+    color: white;
+    font-size: 12px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px; /* Makes it circular by default */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px; /* Padding for when numbers get larger */
+    font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    
+    /* Handling for larger numbers */
+    &:has(> span) {
+        content: attr(data-count);
+    }
+}
+
+/* When count goes to double digits, adjust the shape */
+.dice-count:has(> span:first-child:nth-last-child(1):not(:only-child)) {
+    border-radius: 9px;
+    padding: 0 6px;
+}
+
+/* Media query for smaller screens to ensure buttons don't get too small */
+@media (max-width: 480px) {
+    .common-dice {
+        gap: 5px;
+    }
+    
+    .common-dice button {
+        min-width: 50px;
+        padding: 8px 5px;
+        font-size: 14px;
+    }
+    
+    .dice-count {
+        font-size: 10px;
+        min-width: 16px;
+        height: 16px;
+    }
+}

@@ -1,10 +1,11 @@
 use leptos::*;
 use crate::models::dice::{DiceRoll, RollResult, common};
+use std::collections::HashMap;
 
 #[component]
 pub fn StandardRoller() -> impl IntoView {
-    // Signal for the selected dice
-    let (selected_dice, set_selected_dice) = create_signal::<Option<DiceRoll>>(None);
+    // Map to store the count of each die type
+    let (dice_counts, set_dice_counts) = create_signal::<HashMap<u32, u32>>(HashMap::new());
     
     // Signal for any error message
     let (error_msg, set_error_msg) = create_signal(String::new());
@@ -16,14 +17,61 @@ pub fn StandardRoller() -> impl IntoView {
     let set_global_roll_results = use_context::<WriteSignal<Vec<RollResult>>>()
         .expect("set_roll_results should be provided");
     
+    // Function to increment a specific die
+    let increment_die = move |sides: u32| {
+        set_dice_counts.update(|counts| {
+            let count = counts.get(&sides).copied().unwrap_or(0);
+            counts.insert(sides, count + 1);
+        });
+    };
+    
+    // Check if any dice are selected
+    let has_selection = move || {
+        dice_counts.get().values().any(|&count| count > 0)
+    };
+    
     // Handle the roll action
     let roll_dice = move |_| {
         set_error_msg.set(String::new()); // Clear any previous error
         
-        if let Some(dice) = selected_dice.get() {
-            let result = dice.roll_with_details();
-            // Set the local last roll result
+        if !has_selection() {
+            set_error_msg.set(String::from("Please select at least one die to roll"));
+            return;
+        }
+        
+        // Create all dice rolls based on counts
+        let mut all_results = Vec::new();
+        let mut combined_roll = None;
+        
+        for (&sides, &count) in dice_counts.get().iter() {
+            if count > 0 {
+                let dice = DiceRoll::new(count, sides, 0);
+                let result = dice.roll_with_details();
+                
+                // First result becomes our base, others get merged
+                if combined_roll.is_none() {
+                    combined_roll = Some(result.clone());
+                } else if let Some(ref mut combined) = combined_roll {
+                    // This is simplified - we'd need to properly combine the results
+                    // in a real implementation by joining roll details
+                    let mut new_combined = result.clone();
+                    new_combined.total += combined.total;
+                    // Combine individual rolls too
+                    let mut new_rolls = combined.individual_rolls.clone();
+                    new_rolls.extend(result.individual_rolls.clone());
+                    new_combined.individual_rolls = new_rolls;
+                    
+                    *combined = new_combined;
+                }
+                
+                all_results.push(result);
+            }
+        }
+        
+        // Set the last roll result
+        if let Some(result) = combined_roll {
             set_last_roll.set(Some(result.clone()));
+            
             // Update the global roll history
             set_global_roll_results.update(|results| {
                 // Add new result at the beginning of the list
@@ -33,14 +81,20 @@ pub fn StandardRoller() -> impl IntoView {
                     results.truncate(10);
                 }
             });
-        } else {
-            set_error_msg.set(String::from("Please select a die to roll first"));
+            
+            // Reset all die counts
+            set_dice_counts.set(HashMap::new());
         }
     };
     
-    // Function to handle selecting a die
-    let select_die = move |dice: DiceRoll| {
-        set_selected_dice.set(Some(dice));
+    // Function to get the count for a specific die
+    let get_die_count = move |sides: u32| -> u32 {
+        dice_counts.get().get(&sides).copied().unwrap_or(0)
+    };
+    
+    // Function to check if a die is selected (count > 0)
+    let is_die_selected = move |sides: u32| -> bool {
+        get_die_count(sides) > 0
     };
 
     view! {
@@ -48,33 +102,68 @@ pub fn StandardRoller() -> impl IntoView {
             // Common dice buttons
             <div class="common-dice">
                 <button 
-                    on:click=move |_| select_die(common::d4())
-                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 4 && d.count == 1 && d.modifier == 0)
-                >"d4"</button>
+                    on:click=move |_| increment_die(4)
+                    class:active=move || is_die_selected(4)
+                >
+                    "d4"
+                    <Show when=move || is_die_selected(4)>
+                        <span class="dice-count">{move || get_die_count(4)}</span>
+                    </Show>
+                </button>
                 <button 
-                    on:click=move |_| select_die(common::d6())
-                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 6 && d.count == 1 && d.modifier == 0)
-                >"d6"</button>
+                    on:click=move |_| increment_die(6)
+                    class:active=move || is_die_selected(6)
+                >
+                    "d6"
+                    <Show when=move || is_die_selected(6)>
+                        <span class="dice-count">{move || get_die_count(6)}</span>
+                    </Show>
+                </button>
                 <button 
-                    on:click=move |_| select_die(common::d8())
-                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 8 && d.count == 1 && d.modifier == 0)
-                >"d8"</button>
+                    on:click=move |_| increment_die(8)
+                    class:active=move || is_die_selected(8)
+                >
+                    "d8"
+                    <Show when=move || is_die_selected(8)>
+                        <span class="dice-count">{move || get_die_count(8)}</span>
+                    </Show>
+                </button>
                 <button 
-                    on:click=move |_| select_die(common::d10())
-                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 10 && d.count == 1 && d.modifier == 0)
-                >"d10"</button>
+                    on:click=move |_| increment_die(10)
+                    class:active=move || is_die_selected(10)
+                >
+                    "d10"
+                    <Show when=move || is_die_selected(10)>
+                        <span class="dice-count">{move || get_die_count(10)}</span>
+                    </Show>
+                </button>
                 <button 
-                    on:click=move |_| select_die(common::d12())
-                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 12 && d.count == 1 && d.modifier == 0)
-                >"d12"</button>
+                    on:click=move |_| increment_die(12)
+                    class:active=move || is_die_selected(12)
+                >
+                    "d12"
+                    <Show when=move || is_die_selected(12)>
+                        <span class="dice-count">{move || get_die_count(12)}</span>
+                    </Show>
+                </button>
                 <button 
-                    on:click=move |_| select_die(common::d20())
-                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 20 && d.count == 1 && d.modifier == 0)
-                >"d20"</button>
+                    on:click=move |_| increment_die(20)
+                    class:active=move || is_die_selected(20)
+                >
+                    "d20"
+                    <Show when=move || is_die_selected(20)>
+                        <span class="dice-count">{move || get_die_count(20)}</span>
+                    </Show>
+                </button>
                 <button 
-                    on:click=move |_| select_die(common::d100())
-                    class:active=move || selected_dice.get().map_or(false, |d| d.sides == 100 && d.count == 1 && d.modifier == 0)
-                >"d100"</button>
+                    on:click=move |_| increment_die(100)
+                    class:active=move || is_die_selected(100)
+                >
+                    "d100"
+                    <Show when=move || is_die_selected(100)>
+                        <span class="dice-count">{move || get_die_count(100)}</span>
+                    </Show>
+                </button>
             </div>
             
             // Roll button (now below the dice buttons)
@@ -82,7 +171,7 @@ pub fn StandardRoller() -> impl IntoView {
                 <button 
                     on:click=roll_dice
                     class="roll-button"
-                    disabled=move || selected_dice.get().is_none()
+                    disabled=move || !has_selection()
                 >
                     "Roll!"
                 </button>
