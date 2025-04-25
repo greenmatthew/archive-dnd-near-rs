@@ -1,0 +1,97 @@
+.slide-panel-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000; // Increased z-index
+    pointer-events: none;
+}
+
+.slide-panel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    
+    &.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+.slide-panel {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background-color: #2d2d30;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    pointer-events: auto;
+    z-index: 1001; // Make sure panel is above overlay
+    
+    // Left panel styling
+    &.slide-panel-left {
+        left: 0;
+        transform: translateX(-100%);
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+        
+        &.open {
+            transform: translateX(0);
+        }
+    }
+    
+    // Right panel styling
+    &.slide-panel-right {
+        right: 0;
+        transform: translateX(100%);
+        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+        
+        &.open {
+            transform: translateX(0);
+        }
+    }
+}
+
+// Panel content - add specific handling for links
+.panel-content {
+    padding: 15px;
+    flex-grow: 1;
+    overflow-y: auto;
+    color: #e0e0e0;
+    
+    a, button {
+        position: relative;
+        z-index: 1002; // Ensure clickable elements are above panel
+        touch-action: manipulation; // Improves touch behavior
+    }
+}
+
+// Improve touch targeting for buttons
+.close-button {
+    background: none;
+    border: none;
+    color: #a0a0a0;
+    cursor: pointer;
+    padding: 8px; // Increase padding for better touch target
+    margin: 0;
+    min-width: 44px; // Minimum touch target size
+    min-height: 44px; // Minimum touch target size
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1002; // Ensure above panel
+
+    &:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
