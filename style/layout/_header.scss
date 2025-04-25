@@ -33,9 +33,24 @@
     &:hover {
         background-color: rgba(255, 255, 255, 0.1);
     }
+}
+
+.roll-history {
+    position: absolute;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
     
-    .material-symbols-outlined {
-        line-height: 1;
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
     }
 }
 

@@ -11,13 +11,16 @@ pub fn Header(show_menu: WriteSignal<bool>) -> impl IntoView {
         <header class="app-header">
             <div class="header-content">
                 <button class="hamburger-menu" on:click=toggle_menu>
-                    <span class="material-symbols-outlined">menu</span>
+                    <span class="material-symbols">menu</span>
                 </button>
                 <div class="logo">
                     <A href="/">
                         <img src="/assets/images/logo.svg" alt="D&D Helper Logo" />
                     </A>
                 </div>
+                <button class="roll-history" on:click=toggle_menu>
+                    <span class="material-symbols-outlined">deployed_code_history</span>
+                </button>
             </div>
         </header>
     }

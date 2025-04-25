@@ -15,14 +15,21 @@ pub fn App() -> impl IntoView {
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Stylesheet id="leptos" href="/pkg/dnd-near-rs.css"/>
+        
+        <Stylesheet id="material-symbols-outlined" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
+        <Stylesheet id="material-symbols" href="https://fonts.googleapis.com/css2?family=Material+Symbols:opsz,wght,FILL,GRAD@24,400,1,0"/>
 
-        <Stylesheet href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close,menu"/>
+        <link rel="stylesheet" href="&icon_names=home" />
 
         <Link rel="icon" type_="image/x-icon" href="/assets/favicon.ico"/>
         <Link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"/>
         <Link rel="icon" type_="image/png" sizes="32x32" href="/assets/favicon-32x32.png"/>
         <Link rel="icon" type_="image/png" sizes="16x16" href="/assets/favicon-16x16.png"/>
         <Link rel="manifest" href="/assets/site.webmanifest"/>
+
+        <Meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+        <Meta name="apple-mobile-web-app-capable" content="yes"/>
+        <Meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
         <Title text="D&D Near"/>
 
