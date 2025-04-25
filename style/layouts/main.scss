@@ -50,13 +50,13 @@ a:hover {
     text-decoration: none;
 }
 
-@import 'ui/input';
-@import 'ui/button';
-@import 'ui/slide_panel';
-@import 'ui/tabs';
+@import '../ui/input';
+@import '../ui/button';
+@import '../ui/slide_panel';
+@import '../ui/tabs';
 
-@import 'components/side_nav';
-@import 'components/roll_history';
-@import 'components/dice_roller';
+@import '../components/side_nav';
+@import '../components/roll_history';
+@import '../components/dice_roller';
 
-@import 'layouts/header';
+@import 'header';
