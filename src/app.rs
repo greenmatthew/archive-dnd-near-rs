@@ -1,9 +1,8 @@
-use leptos::{IntoView, Show, component, create_signal, SignalGet, provide_context, view};
+use leptos::{IntoView, component, create_signal, provide_context, view};
 use leptos_meta::{Link, Meta, Stylesheet, Title, provide_meta_context};
 use leptos_router::{A, Route, Router, Routes};
 use crate::components::{DiceRoller, RollHistoryPanel, SideNav};
 use crate::layouts::Header;
-use crate::ui::{TabContainer, TabItem};
 use crate::models::RollResult;
 
 #[must_use]
@@ -76,84 +75,22 @@ pub fn App() -> impl IntoView {
 fn HomePage() -> impl IntoView {
     view! {
         <div>
-            <div class="tab-container">
-                <div class="tab-buttons">
-                    <button class="tab-button active" data-tab="dice-roller">Dice Roller</button>
-                    <button class="tab-button" data-tab="custom-calculator">Solstora Calculator</button>
-                </div>
-            
-                <div id="dice-roller" class="tab-content active">
-                    <p>Hello</p>
-                </div>
-            
-                <div id="custom-calculator" class="tab-content">
-                    <p>World!</p>
-                </div>
+            <h2>"Welcome to D&D Near"</h2>
+            <p>"A simple toolkit to help with your D&D sessions."</p>
+            <div class="tool-links">
+                <A href="/dice">"Dice Roller"</A>
             </div>
         </div>
     }
 }
 
-/// Dice Roller page with tab system
+/// Dice Roller page
 #[component]
 fn DiceRollerPage() -> impl IntoView {
-    // Create tabs for the dice roller page
-    let tabs = vec![
-        TabItem { 
-            id: "standard".to_string(), 
-            title: "Standard Roller".to_string() 
-        },
-        TabItem { 
-            id: "solstora".to_string(), 
-            title: "Solstora Calculator".to_string() 
-        },
-    ];
-    
-    // Track the currently selected tab
-    let (selected_tab, set_selected_tab) = create_signal("standard".to_string());
-    
-    view! {
-        <div class="dice-section-container">
-            <TabContainer 
-                tabs=tabs
-                selected_tab=selected_tab
-                set_selected_tab=set_selected_tab
-            >
-                // We'll use the Show component from Leptos to conditionally render content
-                // based on the selected tab
-                <Show when=move || selected_tab.get() == "standard">
-                    <div class="tab-content active">
-                        <SolstoraRollerContent />
-                    </div>
-                </Show>
-                
-                <Show when=move || selected_tab.get() == "solstora">
-                    <div class="tab-content active">
-                        <SolstoraCalculatorContent />
-                    </div>
-                </Show>
-            </TabContainer>
-        </div>
-    }
-}
-
-/// Standard Dice Roller Tab Content
-#[component]
-fn SolstoraRollerContent() -> impl IntoView {
     view! {
         <div>
+            <h2>"Dice Roller"</h2>
             <DiceRoller />
-        </div>
-    }
-}
-
-/// Solstora Calculator Tab Content
-#[component]
-fn SolstoraCalculatorContent() -> impl IntoView {
-    view! {
-        <div>
-            <h3 class="text-center">"Solstora Calculator"</h3>
-            <p>"The Solstora Calculator will be implemented here. It will allow for custom item calculations that D&D Beyond cannot provide."</p>
         </div>
     }
 }

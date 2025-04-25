@@ -2,7 +2,7 @@ use leptos::*;
 use crate::models::dice::{DiceRoll, RollResult, common};
 
 #[component]
-pub fn DiceRoller() -> impl IntoView {
+pub fn StandardRoller() -> impl IntoView {
     // Signal for the dice notation input
     let (dice_notation, set_dice_notation) = create_signal(String::from("2d6"));
     
@@ -57,7 +57,7 @@ pub fn DiceRoller() -> impl IntoView {
     };
 
     view! {
-        <div class="dice-roller">
+        <div class="standard-dice-roller">
             <div class="input-group">
                 <input 
                     type="text" 
