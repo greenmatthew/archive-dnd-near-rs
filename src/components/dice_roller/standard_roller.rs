@@ -1,6 +1,10 @@
 use leptos::*;
 use crate::models::dice::{DiceRoll, DiceRollResult};
 use std::collections::HashMap;
+use super::die_button::DieButton;
+
+// Common dice sides we support
+const COMMON_DICE: [u32; 7] = [20, 12, 10, 100, 8, 6, 4];
 
 #[component]
 pub fn StandardRoller() -> impl IntoView {
@@ -30,16 +34,12 @@ pub fn StandardRoller() -> impl IntoView {
         dice_counts.get().values().any(|&count| count > 0)
     };
     
-    // Handle the roll action
-    let roll_dice = move |_| {
-        set_error_msg.set(String::new()); // Clear any previous error
-        
+    // Create all dice rolls based on counts and return results
+    let create_dice_rolls = move || -> Option<(Vec<DiceRollResult>, DiceRollResult)> {
         if !has_selection() {
-            set_error_msg.set(String::from("Please select at least one die to roll"));
-            return;
+            return None;
         }
         
-        // Create all dice rolls based on counts
         let mut all_results = Vec::new();
         let mut combined_dice_results = Vec::new();
         let mut combined_total = 0;
@@ -59,30 +59,53 @@ pub fn StandardRoller() -> impl IntoView {
             }
         }
         
+        if all_results.is_empty() {
+            return None;
+        }
+        
         // Create a combined result
-        if !all_results.is_empty() {
-            // Create a combined DiceRollResult
-            let combined_result = DiceRollResult {
-                result: combined_total,
-                dice_results: combined_dice_results,
-                operation: None,
-                modifier: Some(0),
-            };
-            
-            set_last_roll.set(Some(combined_result.clone()));
-            
-            // Update the global roll history
-            set_global_roll_results.update(|results| {
-                // Add new result at the beginning of the list
-                results.insert(0, combined_result);
-                // Keep only the last 10 results
-                if results.len() > 10 {
-                    results.truncate(10);
-                }
-            });
-            
-            // Reset all die counts
-            set_dice_counts.set(HashMap::new());
+        let combined_result = DiceRollResult {
+            result: combined_total,
+            dice_results: combined_dice_results,
+            operation: None,
+            modifier: Some(0),
+        };
+        
+        Some((all_results, combined_result))
+    };
+    
+    // Handle updating roll history
+    let update_roll_history = move |combined_result: DiceRollResult| {
+        set_global_roll_results.update(|results| {
+            // Add new result at the beginning of the list
+            results.insert(0, combined_result);
+            // Keep only the last 10 results
+            if results.len() > 10 {
+                results.truncate(10);
+            }
+        });
+    };
+    
+    // Handle the roll action
+    let roll_dice = move |_| {
+        set_error_msg.set(String::new()); // Clear any previous error
+        
+        if !has_selection() {
+            set_error_msg.set(String::from("Please select at least one die to roll"));
+            return;
+        }
+        
+        match create_dice_rolls() {
+            Some((_, combined_result)) => {
+                set_last_roll.set(Some(combined_result.clone()));
+                update_roll_history(combined_result);
+                
+                // Reset all die counts
+                set_dice_counts.set(HashMap::new());
+            }
+            None => {
+                set_error_msg.set(String::from("Error creating dice rolls"));
+            }
         }
     };
     
@@ -96,89 +119,33 @@ pub fn StandardRoller() -> impl IntoView {
         get_die_count(sides) > 0
     };
 
+    // Create a callback for handling die button clicks
+    let die_callback = move |sides: u32| {
+        increment_die(sides);
+    };
+
+    // Render dice buttons
+    let render_dice_buttons = move || {
+        COMMON_DICE.iter().map(|&sides| {
+            view! {
+                <DieButton
+                    sides={sides}
+                    count={get_die_count(sides)}
+                    on_click={Callback::new(move |s| die_callback(s))}
+                    is_active={is_die_selected(sides)}
+                />
+            }
+        }).collect::<Vec<_>>()
+    };
+
     view! {
         <div class="standard-dice-roller">
             // Common dice buttons with icons
-            <div class="common-dice">
-                <button 
-                    on:click=move |_| increment_die(4)
-                    class:active=move || is_die_selected(4)
-                >
-                    <span class="dice-icon dice-icon-d4"></span>
-                    <span class="dice-label">d4</span>
-                    <Show when=move || is_die_selected(4)>
-                        <span class="dice-count">{move || get_die_count(4)}</span>
-                    </Show>
-                </button>
-                
-                <button 
-                    on:click=move |_| increment_die(6)
-                    class:active=move || is_die_selected(6)
-                >
-                    <span class="dice-icon dice-icon-d6"></span>
-                    <span class="dice-label">d6</span>
-                    <Show when=move || is_die_selected(6)>
-                        <span class="dice-count">{move || get_die_count(6)}</span>
-                    </Show>
-                </button>
-                
-                <button 
-                    on:click=move |_| increment_die(8)
-                    class:active=move || is_die_selected(8)
-                >
-                    <span class="dice-icon dice-icon-d8"></span>
-                    <span class="dice-label">d8</span>
-                    <Show when=move || is_die_selected(8)>
-                        <span class="dice-count">{move || get_die_count(8)}</span>
-                    </Show>
-                </button>
-                
-                <button 
-                    on:click=move |_| increment_die(10)
-                    class:active=move || is_die_selected(10)
-                >
-                    <span class="dice-icon dice-icon-d10"></span>
-                    <span class="dice-label">d10</span>
-                    <Show when=move || is_die_selected(10)>
-                        <span class="dice-count">{move || get_die_count(10)}</span>
-                    </Show>
-                </button>
-                
-                <button 
-                    on:click=move |_| increment_die(12)
-                    class:active=move || is_die_selected(12)
-                >
-                    <span class="dice-icon dice-icon-d12"></span>
-                    <span class="dice-label">d12</span>
-                    <Show when=move || is_die_selected(12)>
-                        <span class="dice-count">{move || get_die_count(12)}</span>
-                    </Show>
-                </button>
-                
-                <button 
-                    on:click=move |_| increment_die(20)
-                    class:active=move || is_die_selected(20)
-                >
-                    <span class="dice-icon dice-icon-d20"></span>
-                    <span class="dice-label">d20</span>
-                    <Show when=move || is_die_selected(20)>
-                        <span class="dice-count">{move || get_die_count(20)}</span>
-                    </Show>
-                </button>
-                
-                <button 
-                    on:click=move |_| increment_die(100)
-                    class:active=move || is_die_selected(100)
-                >
-                    <span class="dice-icon dice-icon-d100"></span>
-                    <span class="dice-label">d100</span>
-                    <Show when=move || is_die_selected(100)>
-                        <span class="dice-count">{move || get_die_count(100)}</span>
-                    </Show>
-                </button>
+            <div class="dice-button">
+                {render_dice_buttons}
             </div>
             
-            // Roll button (now below the dice buttons)
+            // Roll button
             <div class="roll-button-container">
                 <button 
                     on:click=roll_dice
@@ -196,7 +163,7 @@ pub fn StandardRoller() -> impl IntoView {
                 </div>
             </Show>
             
-            // Always display the last roll container, but with different content based on whether a roll has been made
+            // Always display the last roll container
             <div class="last-roll-container">
                 <div class="last-roll-value">
                     {move || last_roll.get().map(|result| result.result.to_string()).unwrap_or_else(|| "-".to_string())}

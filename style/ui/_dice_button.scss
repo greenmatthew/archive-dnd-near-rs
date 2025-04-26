@@ -1,0 +1,81 @@
+/* Square dice buttons with dice icons */
+.dice-button {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 15px 0;
+    gap: 12px;
+}
+
+.dice-button button {
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 70px;          /* Slightly larger */
+    height: 70px;         /* Fixed height to match width */
+    position: relative;   /* Required for absolute positioning of the counter */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;           /* Remove padding to ensure square shape */
+    font-size: 16px;      /* Consistent font size */
+    font-weight: bold;    /* Make text bolder */
+    border-radius: 8px;   /* Slightly rounded corners */
+    background-color: #3a3a3c; /* Darker tab background */
+    
+    &.active {
+        background-color: #9d4edd; /* Brighter purple for active state */
+        transform: scale(1.05);
+        box-shadow: 0 0 8px rgba(157, 78, 221, 0.6);
+    }
+}
+
+/* Dice label */
+.dice-label {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+/* Dice counter badge styling */
+.dice-count {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background-color: #ff4081; /* A bright pink color that stands out */
+    color: white;
+    font-size: 12px;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;   /* Makes it circular by default */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;       /* Padding for when numbers get larger */
+    font-weight: bold;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Media query for smaller screens to ensure buttons don't get too small */
+@media (max-width: 480px) {
+    .dice-button {
+        gap: 8px;
+    }
+    
+    .dice-button button {
+        width: 60px;      /* Smaller on mobile */
+        height: 60px;
+    }
+    
+    .dice-count {
+        font-size: 10px;
+        min-width: 16px;
+        height: 16px;
+    }
+}
+
+/* When count goes to double digits, adjust the shape */
+.dice-count:has(> span:first-child:nth-last-child(1):not(:only-child)) {
+    border-radius: 9px;
+    padding: 0 6px;
+}
