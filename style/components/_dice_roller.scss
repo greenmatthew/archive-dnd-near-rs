@@ -82,11 +82,30 @@
     min-height: 20px; /* Ensures consistent height even when empty */
 }
 
+/* Square dice buttons with better counter positioning */
+.common-dice {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 15px 0;
+    gap: 10px;
+}
+
 .common-dice button {
     flex-grow: 0;
+    flex-shrink: 0;
     min-width: 60px;
+    width: 60px;          /* Fixed width */
+    height: 60px;         /* Fixed height to match width */
+    position: relative;   /* Required for absolute positioning of the counter */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease;
-    position: relative; /* Required for absolute positioning of the counter */
+    padding: 0;           /* Remove padding to ensure square shape */
+    font-size: 16px;      /* Consistent font size */
+    font-weight: bold;    /* Make text bolder */
+    border-radius: 8px;   /* Slightly rounded corners */
     
     &.active {
         background-color: #9d4edd; /* Brighter purple for active state */
@@ -98,42 +117,32 @@
 /* Dice counter badge styling */
 .dice-count {
     position: absolute;
-    bottom: 4px;
-    right: 4px;
+    top: 2px;             /* Position at top-right */
+    right: 2px;
     background-color: #ff4081; /* A bright pink color that stands out */
     color: white;
     font-size: 12px;
     min-width: 18px;
     height: 18px;
-    border-radius: 9px; /* Makes it circular by default */
+    border-radius: 9px;   /* Makes it circular by default */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 3px; /* Padding for when numbers get larger */
+    padding: 0 3px;       /* Padding for when numbers get larger */
     font-weight: bold;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    
-    /* Handling for larger numbers */
-    &:has(> span) {
-        content: attr(data-count);
-    }
-}
-
-/* When count goes to double digits, adjust the shape */
-.dice-count:has(> span:first-child:nth-last-child(1):not(:only-child)) {
-    border-radius: 9px;
-    padding: 0 6px;
 }
 
 /* Media query for smaller screens to ensure buttons don't get too small */
 @media (max-width: 480px) {
     .common-dice {
-        gap: 5px;
+        gap: 6px;
     }
     
     .common-dice button {
         min-width: 50px;
-        padding: 8px 5px;
+        width: 50px;      /* Smaller on mobile */
+        height: 50px;
         font-size: 14px;
     }
     
@@ -142,4 +151,10 @@
         min-width: 16px;
         height: 16px;
     }
+}
+
+/* When count goes to double digits, adjust the shape */
+.dice-count:has(> span:first-child:nth-last-child(1):not(:only-child)) {
+    border-radius: 9px;
+    padding: 0 6px;
 }
