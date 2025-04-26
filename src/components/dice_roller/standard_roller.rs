@@ -1,5 +1,5 @@
 use leptos::*;
-use crate::models::dice::{DiceRoll, DiceRollResult, DiceRollOp};
+use crate::models::dice::{DiceRoll, DiceRollResult};
 use std::collections::HashMap;
 
 #[component]
@@ -98,67 +98,80 @@ pub fn StandardRoller() -> impl IntoView {
 
     view! {
         <div class="standard-dice-roller">
-            // Common dice buttons
+            // Common dice buttons with icons
             <div class="common-dice">
                 <button 
                     on:click=move |_| increment_die(4)
                     class:active=move || is_die_selected(4)
                 >
-                    "d4"
+                    <span class="dice-icon dice-icon-d4"></span>
+                    <span class="dice-label">d4</span>
                     <Show when=move || is_die_selected(4)>
                         <span class="dice-count">{move || get_die_count(4)}</span>
                     </Show>
                 </button>
+                
                 <button 
                     on:click=move |_| increment_die(6)
                     class:active=move || is_die_selected(6)
                 >
-                    "d6"
+                    <span class="dice-icon dice-icon-d6"></span>
+                    <span class="dice-label">d6</span>
                     <Show when=move || is_die_selected(6)>
                         <span class="dice-count">{move || get_die_count(6)}</span>
                     </Show>
                 </button>
+                
                 <button 
                     on:click=move |_| increment_die(8)
                     class:active=move || is_die_selected(8)
                 >
-                    "d8"
+                    <span class="dice-icon dice-icon-d8"></span>
+                    <span class="dice-label">d8</span>
                     <Show when=move || is_die_selected(8)>
                         <span class="dice-count">{move || get_die_count(8)}</span>
                     </Show>
                 </button>
+                
                 <button 
                     on:click=move |_| increment_die(10)
                     class:active=move || is_die_selected(10)
                 >
-                    "d10"
+                    <span class="dice-icon dice-icon-d10"></span>
+                    <span class="dice-label">d10</span>
                     <Show when=move || is_die_selected(10)>
                         <span class="dice-count">{move || get_die_count(10)}</span>
                     </Show>
                 </button>
+                
                 <button 
                     on:click=move |_| increment_die(12)
                     class:active=move || is_die_selected(12)
                 >
-                    "d12"
+                    <span class="dice-icon dice-icon-d12"></span>
+                    <span class="dice-label">d12</span>
                     <Show when=move || is_die_selected(12)>
                         <span class="dice-count">{move || get_die_count(12)}</span>
                     </Show>
                 </button>
+                
                 <button 
                     on:click=move |_| increment_die(20)
                     class:active=move || is_die_selected(20)
                 >
-                    "d20"
+                    <span class="dice-icon dice-icon-d20"></span>
+                    <span class="dice-label">d20</span>
                     <Show when=move || is_die_selected(20)>
                         <span class="dice-count">{move || get_die_count(20)}</span>
                     </Show>
                 </button>
+                
                 <button 
                     on:click=move |_| increment_die(100)
                     class:active=move || is_die_selected(100)
                 >
-                    "d100"
+                    <span class="dice-icon dice-icon-d100"></span>
+                    <span class="dice-label">d100</span>
                     <Show when=move || is_die_selected(100)>
                         <span class="dice-count">{move || get_die_count(100)}</span>
                     </Show>

@@ -82,23 +82,23 @@
     min-height: 20px; /* Ensures consistent height even when empty */
 }
 
-/* Square dice buttons with better counter positioning */
+/* Square dice buttons with dice icons */
 .common-dice {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin: 15px 0;
-    gap: 10px;
+    gap: 12px;
 }
 
 .common-dice button {
     flex-grow: 0;
     flex-shrink: 0;
-    min-width: 60px;
-    width: 60px;          /* Fixed width */
-    height: 60px;         /* Fixed height to match width */
+    width: 70px;          /* Slightly larger */
+    height: 70px;         /* Fixed height to match width */
     position: relative;   /* Required for absolute positioning of the counter */
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
@@ -106,6 +106,7 @@
     font-size: 16px;      /* Consistent font size */
     font-weight: bold;    /* Make text bolder */
     border-radius: 8px;   /* Slightly rounded corners */
+    background-color: #3a3a3c; /* Darker tab background */
     
     &.active {
         background-color: #9d4edd; /* Brighter purple for active state */
@@ -114,11 +115,17 @@
     }
 }
 
+/* Dice label */
+.dice-label {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
 /* Dice counter badge styling */
 .dice-count {
     position: absolute;
-    top: 2px;             /* Position at top-right */
-    right: 2px;
+    top: 5px;
+    right: 5px;
     background-color: #ff4081; /* A bright pink color that stands out */
     color: white;
     font-size: 12px;
@@ -136,14 +143,12 @@
 /* Media query for smaller screens to ensure buttons don't get too small */
 @media (max-width: 480px) {
     .common-dice {
-        gap: 6px;
+        gap: 8px;
     }
     
     .common-dice button {
-        min-width: 50px;
-        width: 50px;      /* Smaller on mobile */
-        height: 50px;
-        font-size: 14px;
+        width: 60px;      /* Smaller on mobile */
+        height: 60px;
     }
     
     .dice-count {
@@ -158,3 +163,5 @@
     border-radius: 9px;
     padding: 0 6px;
 }
+
+@import 'dice_icons';
