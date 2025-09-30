@@ -1,9 +1,9 @@
-use leptos::{IntoView, component, create_signal, provide_context, view};
+use leptos::{IntoView, component, create_signal, view};
 use leptos_meta::{Link, Meta, Stylesheet, Title, provide_meta_context};
 use leptos_router::{A, Route, Router, Routes};
 use crate::components::{DiceRoller, RollHistoryPanel, SideNav};
 use crate::layouts::Header;
-use crate::models::DiceRollResult;
+use crate::models::roll_history::provide_dice_history;
 
 #[must_use]
 #[component]
@@ -17,16 +17,12 @@ pub fn App() -> impl IntoView {
     // Signal to track if the roll history panel is open or closed
     let (show_roll_history, set_show_roll_history) = create_signal(false);
     
-    // Create a resource to store roll results globally
-    let (roll_results, set_roll_results) = create_signal::<Vec<DiceRollResult>>(vec![]);
-    
-    // Create context for roll results so any component can access it
-    provide_context(set_roll_results);
+    provide_dice_history();
 
     view! {
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
-        <Stylesheet id="leptos" href="/pkg/dnd-near-rs.css"/>
+        <Stylesheet id="leptos" href="/pkg/dnd-near.css"/>
         
         <Stylesheet id="material-symbols-outlined" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
         <Stylesheet id="material-symbols" href="https://fonts.googleapis.com/css2?family=Material+Symbols:opsz,wght,FILL,GRAD@24,400,1,0"/>
@@ -62,7 +58,6 @@ pub fn App() -> impl IntoView {
                 </Routes>
             </main>
             <RollHistoryPanel 
-                roll_results=roll_results
                 is_open=show_roll_history 
                 set_open=set_show_roll_history 
             />

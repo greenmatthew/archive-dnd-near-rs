@@ -37,7 +37,7 @@ release:
 
 serve:
 	@echo "Running server on http://127.0.0.1:3000"
-	./target/debug/dnd-near-rs
+	./target/debug/dnd-near
 
 # Run client-side rendering via trunk (useful for Tauri integration)
 csr:
@@ -74,7 +74,7 @@ install-deps:
 
 # Set environment variables for deployment
 deploy-env:
-	@echo "export LEPTOS_OUTPUT_NAME=\"dnd-near-rs\"" > .env
+	@echo "export LEPTOS_OUTPUT_NAME=\"dnd-near\"" > .env
 	@echo "export LEPTOS_SITE_ROOT=\"site\"" >> .env
 	@echo "export LEPTOS_SITE_PKG_DIR=\"pkg\"" >> .env
 	@echo "export LEPTOS_SITE_ADDR=\"127.0.0.1:3000\"" >> .env

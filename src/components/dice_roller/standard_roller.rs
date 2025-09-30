@@ -1,5 +1,6 @@
 use leptos::*;
 use crate::models::dice::{DiceRoll, DiceRollResult};
+use crate::models::roll_history::use_dice_history; // Add this import
 use std::collections::HashMap;
 use super::die_button::DieButton;
 
@@ -17,9 +18,8 @@ pub fn StandardRoller() -> impl IntoView {
     // Local signal to store the most recent roll result
     let (last_roll, set_last_roll) = create_signal::<Option<DiceRollResult>>(None);
     
-    // Get the global roll results setter from context
-    let set_global_roll_results = use_context::<WriteSignal<Vec<DiceRollResult>>>()
-        .expect("set_roll_results should be provided");
+    // Get the global roll history store from context
+    let history_store = use_dice_history();
     
     // Function to increment a specific die
     let increment_die = move |sides: u32| {
@@ -74,18 +74,6 @@ pub fn StandardRoller() -> impl IntoView {
         Some((all_results, combined_result))
     };
     
-    // Handle updating roll history
-    let update_roll_history = move |combined_result: DiceRollResult| {
-        set_global_roll_results.update(|results| {
-            // Add new result at the beginning of the list
-            results.insert(0, combined_result);
-            // Keep only the last 10 results
-            if results.len() > 10 {
-                results.truncate(10);
-            }
-        });
-    };
-    
     // Handle the roll action
     let roll_dice = move |_| {
         set_error_msg.set(String::new()); // Clear any previous error
@@ -96,9 +84,11 @@ pub fn StandardRoller() -> impl IntoView {
         }
         
         match create_dice_rolls() {
-            Some((_, combined_result)) => {
+            Some((individual_results, combined_result)) => {
                 set_last_roll.set(Some(combined_result.clone()));
-                update_roll_history(combined_result);
+                
+                // Add the roll to history store
+                history_store.add_roll(vec![combined_result]);
                 
                 // Reset all die counts
                 set_dice_counts.set(HashMap::new());
